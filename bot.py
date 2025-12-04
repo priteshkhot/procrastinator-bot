@@ -20,7 +20,9 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if message.content.startswith('$hello'):
-        await message.channel.send('Hello!')
+    if message.channel.id == int(os.getenv("UPDATE_CHANNEL_ID")):
+        if message.content.startswith('$hello'):
+            await message.add_reaction('✅')
+            await message.channel.send('Hello!')
 
-client.run(os.getenv("BOT_API"))
+client.run(os.getenv("BOT_TOKEN"))
