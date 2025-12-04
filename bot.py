@@ -20,7 +20,7 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if message.channel.id == int(os.getenv("UPDATE_CHANNEL_ID")):
+    if message.channel.id == int(os.getenv('UPDATE_CHANNEL_ID')):
         if message.content.startswith('$hello'):
             await message.add_reaction('✅')
             await message.channel.send('Hello!')
