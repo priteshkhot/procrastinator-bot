@@ -1,5 +1,4 @@
 # This example requires the 'message_content' intent.
-
 import discord
 from dotenv import load_dotenv
 import os
@@ -26,9 +25,18 @@ async def on_ready():
 async def on_message(message):
     if message.author == client.user:
         return
+    
+    CHANNEL_ID = int(os.getenv('UPDATE_CHANNEL_ID'))
+    channel = client.get_channel(CHANNEL_ID)
 
-    if message.channel.id == int(os.getenv('UPDATE_CHANNEL_ID')):
-        save_data(message)
+    if message.content.startswith("prev"):
+        prev = load_data()
+        user_id = str(message.author.id)
+        await channel.send(prev[user_id]["last message"]["content"])
+        
+
+    if message.channel.id == CHANNEL_ID:
+        save_data(message, progress=True)
         if message.content.startswith("$"):
             await message.channel.send(message.content)
 
@@ -38,14 +46,26 @@ def load_data():
     try:
         with open('./output.json', 'r') as file:      
             data = json.load(file)
+            return data
     except FileNotFoundError:
         data = {}
+        return
     
-def save_data(message): 
+def save_data(message, progress=False): 
     global data     
     ct = datetime.now()
-
-    data[str(message.author.id)] = ct.timestamp() 
+    
+    data[str(message.author.id)] = {
+        "user name" : str(message.author.name),
+        "last message": {"time": ct.timestamp(), "content" : message.content}
+    }
+    if progress == True:
+        data[str(message.author.id)]["progress"] = {
+            "procrastinator" : False,
+            "time" : ct.timestamp(),
+            "content" : message.content
+        }
+        
 
     with open('output.json', 'w') as file:
         json.dump(data, file, indent=4)

@@ -46,3 +46,6 @@ htmlcov/
 # Miscellaneous
 .history/
 output.json
+
+# test files
+test.py
