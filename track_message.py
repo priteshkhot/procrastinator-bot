@@ -37,10 +37,9 @@ async def on_message(message):
 
     if message.channel.id == CHANNEL_ID: #only save messages for specified channel
         if "daily progress" in message.content: #simple logic
-            print("Found!")
             save_data(message, progress=True)
+            await message.add_reaction("✅")
         else:
-            print("Not Found!")
             save_data(message)
 
 
