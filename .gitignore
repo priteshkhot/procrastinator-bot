@@ -49,3 +49,6 @@ output.json
 
 # test files
 test.py
+test/
+
+.gitignore
