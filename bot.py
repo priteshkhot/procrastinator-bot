@@ -41,12 +41,22 @@ def load_data():
     except FileNotFoundError:
         data = {}
     
-def save_data(message): 
+def save_data(message, progress=False): 
     global data     
     ct = datetime.now()
-
-    data[str(message.author.id)] = ct.timestamp() 
-
+    user_id = str(message.author.id)
+    if user_id not in data:
+        data[user_id] = {"user name" : str(message.author.name)}
+    
+    data[user_id]["last message"] = {"time": ct.timestamp(), "content" : message.content}
+        
+    if progress == True:
+        data[user_id]["progress"] = {
+            "procrastinator" : False,
+            "time" : ct.timestamp(),
+            "content" : message.content
+        }
+        
     with open('output.json', 'w') as file:
         json.dump(data, file, indent=4)
 
