@@ -18,13 +18,10 @@ data = {}
 async def on_ready():
     print(f'We have logged in as {client.user}')
     load_data()
-<<<<<<< HEAD
     channel = client.get_channel(int(os.getenv('UPDATE_CHANNEL_ID')))  #send a message when bot is active for testing
     await channel.send(f'{client.user} is online!')
-=======
     if not hourly_check.is_running():
         hourly_check.start()
->>>>>>> upstream/main
 
 @client.event
 async def on_message(message):
